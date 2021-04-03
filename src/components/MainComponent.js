@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import Contact from './ContactComponent';
@@ -9,7 +10,6 @@ import { DISHES } from '../shared/dishes';
 import { COMMENTS } from '../shared/comments';
 import { LEADERS } from '../shared/leaders';
 import { PROMOTIONS } from '../shared/promotions';
-import { Switch, Route, Redirect } from 'react-router-dom';
 
 class Main extends Component {
 
@@ -20,8 +20,7 @@ class Main extends Component {
       dishes: DISHES,
       comments: COMMENTS,
       leaders: LEADERS,
-      promotions: PROMOTIONS,
-      selectedDish: null
+      promotions: PROMOTIONS
     };
   }
 
