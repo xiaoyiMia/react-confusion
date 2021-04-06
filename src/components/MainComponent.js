@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import Home from './HomeComponent';
-import Menu from './MenuComponent';
-import Contact from './ContactComponent';
-import DishDetail from './DishdetailComponent';
-import Header from './HeaderComponent';
-import Footer from './FooterComponent';
-import { DISHES } from '../shared/dishes';
-import { COMMENTS } from '../shared/comments';
-import { LEADERS } from '../shared/leaders';
-import { PROMOTIONS } from '../shared/promotions';
+import React, { Component } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import Home from "./HomeComponent";
+import About from "./AboutComponent";
+import Menu from "./MenuComponent";
+import Contact from "./ContactComponent";
+import DishDetail from "./DishdetailComponent";
+import Header from "./HeaderComponent";
+import Footer from "./FooterComponent";
+import { DISHES } from "../shared/dishes";
+import { COMMENTS } from "../shared/comments";
+import { LEADERS } from "../shared/leaders";
+import { PROMOTIONS } from "../shared/promotions";
 
 class Main extends Component {
-
   constructor(props) {
     super(props);
 
@@ -20,12 +20,11 @@ class Main extends Component {
       dishes: DISHES,
       comments: COMMENTS,
       leaders: LEADERS,
-      promotions: PROMOTIONS
+      promotions: PROMOTIONS,
     };
   }
 
   render() {
-
     const HomePage = () => {
       return (
         <Home
@@ -34,24 +33,35 @@ class Main extends Component {
           leader={this.state.leaders.filter((leader) => leader.featured)[0]}
         />
       );
-    }
+    };
 
     const DishWithId = ({ match }) => {
       const dishId = parseInt(match.params.dishId, 10);
       return (
         <DishDetail
           dish={this.state.dishes.filter((dish) => dish.id === dishId)[0]}
-          comments={this.state.comments.filter((comment) => comment.dishId === dishId)}
+          comments={this.state.comments.filter(
+            (comment) => comment.dishId === dishId
+          )}
         />
       );
-    }
+    };
 
     return (
       <div>
         <Header />
         <Switch>
           <Route path="/home" component={HomePage} />
-          <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />
+          <Route
+            exact
+            path="/aboutus"
+            component={() => <About leaders={this.state.leaders} />}
+          />
+          <Route
+            exact
+            path="/menu"
+            component={() => <Menu dishes={this.state.dishes} />}
+          />
           <Route path="/menu/:dishId" component={DishWithId} />
           <Route exact path="/contactus" component={Contact} />
           <Redirect to="/home" />
@@ -60,7 +70,6 @@ class Main extends Component {
       </div>
     );
   }
-
 }
 
 export default Main;
