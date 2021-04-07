@@ -31,7 +31,7 @@ function RenderDish({ dish }) {
   );
 }
 
-function RenderComments({ dishComments }) {
+function RenderComments({ dishComments, addComment, dishId }) {
   if (dishComments == null) {
     return <div></div>;
   }
@@ -58,7 +58,7 @@ function RenderComments({ dishComments }) {
         <h4>Comments</h4>
       </div>
       <ul className="list-unstyled">{comments}</ul>
-      <CommentForm />
+      <CommentForm addComment={addComment} dishId={dishId}/>
     </div>
   );
 }
@@ -85,8 +85,8 @@ class CommentForm extends Component {
   }
 
   handleSubmit(values) {
-    console.log("Current State is: " + JSON.stringify(values));
-    alert("Current State is: " + JSON.stringify(values));
+    this.toggleModal();
+    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
   }
 
   render() {
@@ -101,11 +101,11 @@ class CommentForm extends Component {
             <div className="col-12">
               <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                 <Row className="form-group">
-                  <Label htmlFor="rate">Rating</Label>
+                  <Label htmlFor="rating">Rating</Label>
                   <Control.select
                     className="form-control"
-                    model=".rate"
-                    name="rate"
+                    model=".rating"
+                    name="rating"
                   >
                     <option>1</option>
                     <option>2</option>
@@ -115,11 +115,11 @@ class CommentForm extends Component {
                   </Control.select>
                 </Row>
                 <Row className="form-group">
-                  <Label htmlFor="name">Your Name</Label>
+                  <Label htmlFor="author">Your Name</Label>
                   <Control.text
                     className="form-control"
-                    model=".name"
-                    name="name"
+                    model=".author"
+                    name="author"
                     placeholder="Your Name"
                     validators={{
                       minLength: minLength(3),
@@ -128,7 +128,7 @@ class CommentForm extends Component {
                   />
                   <Errors
                     className="text-danger"
-                    model=".name"
+                    model=".author"
                     show="touched"
                     messages={{
                       minLength: "Must be greater than 2 characters",
@@ -178,7 +178,7 @@ const Dishdetail = (props) => {
         </div>
         <div className="row">
           <RenderDish dish={props.dish} />
-          <RenderComments dishComments={props.comments} />
+          <RenderComments dishComments={props.comments} addComment={props.addComment} dishId={props.dish.id} />
         </div>
       </div>
     );
