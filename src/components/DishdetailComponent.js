@@ -16,6 +16,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
+import { Loading } from "./LoadingComponent";
 
 function RenderDish({ dish }) {
   return (
@@ -58,7 +59,7 @@ function RenderComments({ dishComments, addComment, dishId }) {
         <h4>Comments</h4>
       </div>
       <ul className="list-unstyled">{comments}</ul>
-      <CommentForm addComment={addComment} dishId={dishId}/>
+      <CommentForm addComment={addComment} dishId={dishId} />
     </div>
   );
 }
@@ -86,7 +87,12 @@ class CommentForm extends Component {
 
   handleSubmit(values) {
     this.toggleModal();
-    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+    this.props.addComment(
+      this.props.dishId,
+      values.rating,
+      values.author,
+      values.comment
+    );
   }
 
   render() {
@@ -161,7 +167,21 @@ class CommentForm extends Component {
 }
 
 const Dishdetail = (props) => {
-  if (props.dish) {
+  if (props.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  } else if (props.errMess) {
+    <div className="container">
+      <div className="row">
+        <h4>{props.errMess}</h4>
+      </div>
+    </div>;
+  } else if (props.dish) {
     return (
       <div className="container">
         <div className="row">
@@ -178,7 +198,11 @@ const Dishdetail = (props) => {
         </div>
         <div className="row">
           <RenderDish dish={props.dish} />
-          <RenderComments dishComments={props.comments} addComment={props.addComment} dishId={props.dish.id} />
+          <RenderComments
+            dishComments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id}
+          />
         </div>
       </div>
     );
